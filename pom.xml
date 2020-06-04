@@ -9,11 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>rabbitmq-simple-model</module>
+        <module>rabbitmq-springboot-producer</module>
+        <module>rabbitmq-springboot-consumer</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
         <rabbitmq.version>5.7.3</rabbitmq.version>
+        <spring.boot.dependencies.version>2.2.2.RELEASE</spring.boot.dependencies.version>
     </properties>
 
 
@@ -26,7 +29,14 @@
                 <version>${rabbitmq.version}</version>
             </dependency>
 
-
+            <!-- springboot 2.2.2.RELEASE -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
 
 

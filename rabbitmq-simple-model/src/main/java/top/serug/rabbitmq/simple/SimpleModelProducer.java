@@ -3,6 +3,7 @@ package top.serug.rabbitmq.simple;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import top.serug.rabbitmq.util.ConstantUtil;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -12,9 +13,7 @@ import java.util.concurrent.TimeoutException;
  * @Author: serug
  * @Date: 2020/6/3  10:44
  */
-public class Producer {
-
-    public static final String QUEUE_NAME = "simple-queue";
+public class SimpleModelProducer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         //1：创建连接工厂对象
@@ -33,10 +32,10 @@ public class Producer {
         /*
         params：队列名称，是否定义持久化，是否独占本次连接，是否在不使用的时候自动删除队列，队列其他参数
          */
-        channel.queueDeclare(QUEUE_NAME,true,false,false,null);
+        channel.queueDeclare(ConstantUtil.SIMPLE_QUEUE_NAME,true,false,false,null);
         //6.发送消息
-        String message = "hello, rabbitMQ! number 1";
-        channel.basicPublish("",QUEUE_NAME,null,message.getBytes());
+        String message = "hello, rabbitMQ! i am simple message";
+        channel.basicPublish("",ConstantUtil.SIMPLE_QUEUE_NAME,null,message.getBytes());
         System.out.println("============= 发送的消息为："+message);
         //7.释放资源
         channel.close();

@@ -12,6 +12,9 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2020/6/3  11:12
  */
 public class ConnectionUtil {
+
+
+
     public static Connection getConnection() throws IOException, TimeoutException {
         //1：创建连接工厂对象
         ConnectionFactory connectionFactory = new ConnectionFactory();

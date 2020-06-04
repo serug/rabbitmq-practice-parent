@@ -1,7 +1,8 @@
-package top.serug.rabbitmq.simple;
+package top.serug.rabbitmq.topic;
 
 import com.rabbitmq.client.*;
 import top.serug.rabbitmq.util.ConnectionUtil;
+import top.serug.rabbitmq.util.ConstantUtil;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -9,18 +10,19 @@ import java.util.concurrent.TimeoutException;
 /**
  * @Description:
  * @Author: serug
- * @Date: 2020/6/3  10:44
+ * @Date: 2020/6/3  16:01
  */
-public class Consumer {
-
+public class TopicConsumerA {
     public static void main(String[] args) throws IOException, TimeoutException {
-        //1.获取连接
+        //1.创建连接
         Connection connection = ConnectionUtil.getConnection();
         //2.创建channel
         Channel channel = connection.createChannel();
-        //3.创建队列：并设置消息处理
-        channel.queueDeclare(Producer.QUEUE_NAME,true,false,false,null);
-        //4.创建一个consumer：监听消息
+        //3.声明队列
+        channel.queueDeclare(ConstantUtil.TOPIC_QUEUE_A,true,false,false,null);
+        //4.队列绑定交换机:队列名称，交换机名称，路由Key
+        channel.queueBind(ConstantUtil.TOPIC_QUEUE_A,ConstantUtil.TOPIC_EXCHANGES,"AAA.#");
+        //5.创建消费者，并设置消息处理
         DefaultConsumer consumer = new DefaultConsumer(channel){
             /**
              * @Description:
@@ -31,19 +33,18 @@ public class Consumer {
              * @return: void
              */
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                System.out.println("=============== 消息监听中。。。。。");
+                System.out.println("=============== TopicConsumerA  处理【AAA.#】类型的消息。。。。。");
                 System.out.println("消息routingkey："+envelope.getRoutingKey());
                 System.out.println("交换机："+envelope.getExchange());
                 System.out.println("消息ID："+envelope.getDeliveryTag());
-                System.out.println("消息内容："+new String(body,"UTF-8"));
+                System.out.println("AAA.# 路由，消息内容："+new String(body,"UTF-8"));
             }
         };
-        //5.消费消息:
-        /*
-        队列名称，
-        是否自动确认：设置为true，表示消息接收到自动向mq回复接收到，mq接收到回复后，会自动删除消息，设置我false则需要手动确认
-         */
-        channel.basicConsume(Producer.QUEUE_NAME,true,consumer);
+
+        //6.消息消费
+        channel.basicConsume(ConstantUtil.TOPIC_QUEUE_A,true,consumer);
+
 
     }
+
 }
