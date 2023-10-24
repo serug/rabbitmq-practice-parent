@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <rabbitmq.version>5.7.3</rabbitmq.version>
+        <rabbitmq.version>5.18.0</rabbitmq.version>
         <spring.boot.dependencies.version>2.2.2.RELEASE</spring.boot.dependencies.version>
     </properties>
 
